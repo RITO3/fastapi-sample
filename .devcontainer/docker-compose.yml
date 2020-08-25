@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: "3.8"
+    working_dir: /home/python/
+    command: "sleep infinity"
+    ports:
+      - 8000:8000
+    volumes:
+      - "../:/home/python/"
+    environment:
+      - TZ=Asia/Tokyo

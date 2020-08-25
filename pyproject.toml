@@ -1,0 +1,13 @@
+[tool.black]
+exclude = '''
+/(
+  | \.git
+  | \.venv
+  | \__pycache__
+  | \docs/source/conf.py
+  | \wsgi.py
+  | \old
+  | \build
+  | \dist
+)/
+'''

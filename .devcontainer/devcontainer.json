@@ -2,13 +2,8 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.134.1/containers/python-3
 {
 	"name": "Python 3",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		// Update 'VARIANT' to pick a Python version: 3, 3.6, 3.7, 3.8 
-		"args": { "VARIANT": "3" }
-	},
-
+	"service": "app",
+	"dockerComposeFile": "docker-compose.yml",
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
 		"terminal.integrated.shell.linux": "/bin/bash",
@@ -28,9 +23,12 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"ms-python.python"
-	]
-
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"njpwerner.autodocstring",
+		"littlefoxteam.vscode-python-test-adapter"
+	],
+	"workspaceFolder": "/home/python/"
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
