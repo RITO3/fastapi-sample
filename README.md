@@ -54,29 +54,39 @@ $ pipenv install -d "pydocstyle~=5.0.2"
 $ pipenv install -d "flake8-docstrings~=1.5.0"
 ```
 
-テストケース名を記述したとき(関数のドキュメント)に、空行がないと**D202**のエラーがでたため、除外した.
 
-### テストの導入
+### データベース
 
-標準ライブラリ```unittest```を使用する.
-テストレポートを JUnit 形式で出力させるには、```unittest-xml-reporting```を使用する.
+非同期処理を実現する.
+
+参考URL: https://fastapi.tiangolo.com/advanced/async-sql-databases/
+
+| 用途 | ライブラリ名 |
+| ---- | ---- | 
+| モデル定義 | ```SQLAlchemy``` |
+| DBアクセス | ```Databases``` |
+| マイグレーション管理 | ```Alembic``` |
+
+
+インストール
 
 ```shell
-$ pipenv install -d "unittest-xml-reporting~=3.0.3"
+$ pipenv install "SQLAlchemy~=1.3.19"
+$ pipenv install "databases~=0.3.2"
+$ pipenv install "alembic~=1.4.2"
 ```
 
-**unittest_runner.py**にテストの設定(テスト結果の出力先など)を記述する.
-
-カバレッジの計測は```coverage```を導入する.
+alembicの初期化.
 
 ```shell
-$ pipenv install -d coverage~=5.2.1
+$  alembic init alembic
 ```
-
-```coverage```の設定は、**.coveragerc**に記述する.
 
 
 
 ## 参考URL
 
 - [FastAPI](https://fastapi.tiangolo.com/)
+- [SQLAlchemy](https://pypi.org/project/SQLAlchemy/)
+- [databases](https://pypi.org/project/databases/)
+- [alembic](https://pypi.org/project/alembic/)

@@ -12,15 +12,16 @@ black = "~=19.10b0"
 [packages]
 fastapi = "~=0.61.0"
 uvicorn = "~=0.11.8"
+sqlalchemy = "~=1.3.19"
+databases = "~=0.3.2"
+alembic = "~=1.4.2"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
 debug = "uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
-
 ci_init = "mkdir -p ci_result"
-
 lint = "flake8"
 lint_output = "flake8 --format=pylint --output-file=ci_result/flak8.out"
 lint_output_code = "flake8 --show-source"

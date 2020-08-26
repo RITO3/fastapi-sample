@@ -14,3 +14,20 @@ services:
       - "../:/home/python/"
     environment:
       - TZ=Asia/Tokyo
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+  db:
+    image: postgres:13-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ../volumes/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=app
+      - TZ=Asia/Tokyo
