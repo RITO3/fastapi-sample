@@ -74,6 +74,7 @@ $ pipenv install -d "flake8-docstrings~=1.5.0"
 $ pipenv install "SQLAlchemy~=1.3.19"
 $ pipenv install "databases~=0.3.2"
 $ pipenv install "alembic~=1.4.2"
+$ pipenv install "psycopg2~=2.8.5"
 ```
 
 alembicの初期化.
@@ -82,7 +83,44 @@ alembicの初期化.
 $  alembic init alembic
 ```
 
+alembic\env.pyを修正する.
 
+DBの接続文字列をiniファイル経由で取得するのではなく、環境変数にある情報をもとに生成する.
+
+デフォルトでは、文字列型の長さが変更した場合に、変更の検出ができないので、以下の記述を追加する.
+
+
+```python
+context.configure(
+    # ...
+    compare_type = True
+)
+```
+
+参考URL: [MySQL DB migration: change of string length](https://stackoverflow.com/questions/32536041/mysql-db-migration-change-of-string-length)
+
+
+### テーブルの作成方法
+
+以下のコードのように、**declarative_base**を使ってBaseを作成し、そのBaseを継承したモデルを作成すると、Pylanceで継承できないと怒られたため使用しない.
+
+
+```python
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+```
+
+**MetaData**を使うように変更する.
+
+```
+users = Table(
+    "users",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("username", String(16), unique=True),
+    Column("email", String(50), unique=True),
+)
+```
 
 ## 参考URL
 

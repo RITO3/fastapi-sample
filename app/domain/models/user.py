@@ -71,4 +71,3 @@ class User:
             self.__first_name,
             self.__last_name,
         )
-

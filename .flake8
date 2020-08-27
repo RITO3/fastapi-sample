@@ -15,4 +15,6 @@ exclude =
     build,
     dist,
     __init__.py,
+    alembic/,
     models.py
+    base.py
