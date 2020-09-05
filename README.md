@@ -54,6 +54,17 @@ $ pipenv install -d "pydocstyle~=5.0.2"
 $ pipenv install -d "flake8-docstrings~=1.5.0"
 ```
 
+### 入力チェック
+
+Emailの検証するためには、```pydantic[email]```がインストールされている必要がある。
+
+```shell
+ImportError: email-validator is not installed, run `pip install pydantic[email]`
+```
+
+```shell
+$ pipenv install "pydantic[email]~=1.6.1"
+```
 
 ### データベース
 
@@ -75,6 +86,7 @@ $ pipenv install "SQLAlchemy~=1.3.19"
 $ pipenv install "databases~=0.3.2"
 $ pipenv install "alembic~=1.4.2"
 $ pipenv install "psycopg2~=2.8.5"
+$ pipenv install "databases[postgresql]~=0.3.2"
 ```
 
 alembicの初期化.
@@ -122,9 +134,24 @@ users = Table(
 )
 ```
 
+### コマンド
+
+以下のコマンドを実行して、マイグレーションのファイルを作成する.
+
+
+```shell
+$ alembic revision --autogenerate -m "XXXX"
+```
+
+
+```shell
+$ alembic upgrade head
+```
+
 ## 参考URL
 
 - [FastAPI](https://fastapi.tiangolo.com/)
 - [SQLAlchemy](https://pypi.org/project/SQLAlchemy/)
 - [databases](https://pypi.org/project/databases/)
+- [databases document](https://www.encode.io/databases/)
 - [alembic](https://pypi.org/project/alembic/)

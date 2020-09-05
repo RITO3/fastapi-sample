@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     DB_PORT: str
     DB_USER: str
     DB_PASSWORD: str
-    DB_CONNECTION_STRING: Optional[PostgresDsn] = None
+    DB_CONNECTION_STRING: Optional[str] = None
 
     @validator("DB_CONNECTION_STRING", pre=True)
     @classmethod
@@ -22,6 +22,3 @@ class Settings(BaseSettings):
             host=values.get("DB_HOST") or "",
             path=f"/{values.get('DB_NAME') or ''}",
         )
-
-
-settings = Settings()

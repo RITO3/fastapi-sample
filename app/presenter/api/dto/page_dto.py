@@ -6,7 +6,7 @@ from fastapi import Query
 class PageQueryParameterDto:
     def __init__(
         self,
-        page_size: Optional[int] = Query(10, ge=1),
+        page_size: Optional[int] = Query(10, ge=10),
         page_number: Optional[int] = Query(0, ge=0),
     ) -> None:
         self.__page_size = page_size

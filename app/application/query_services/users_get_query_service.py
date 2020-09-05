@@ -8,35 +8,34 @@
 
 """
 
-import dataclasses
 from abc import ABCMeta, abstractmethod
 from typing import List
+from uuid import UUID
 
-from app.domain.models.page import Page
-from app.domain.models.user_value_object import UserId, UserName
+from pydantic import BaseModel
 
 
 class UsersGetQueryServiceRequest:
     """UsersGetQueryServiceRequestクラス."""
 
+    pass
 
-@dataclasses.dataclass(frozen=True)
-class UsersGetQueryServiceUser:
+
+class UsersGetQueryServiceUser(BaseModel):
     """UsersGetQueryServiceUserクラス.
 
     UsersGetQueryServiceで使用するユーザクラスです.
 
     Attributes:
-        id (UserId): ユーザID
-        username (UserName): ユーザ名
+        id (UUID): ユーザID
+        username (str): ユーザ名
     """
 
-    id: UserId
-    username: UserName
+    id: UUID
+    username: str
 
 
-@dataclasses.dataclass(frozen=True)
-class UsersGetQueryServiceResponse:
+class UsersGetQueryServiceResponse(BaseModel):
     """UsersGetQueryResponseクラス.
 
     Attributes:
@@ -45,7 +44,6 @@ class UsersGetQueryServiceResponse:
     """
 
     users: List[UsersGetQueryServiceUser]
-    page: Page
 
 
 class UsersGetQueryService(object):
@@ -54,7 +52,9 @@ class UsersGetQueryService(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
-    def execute(self, req: UsersGetQueryServiceRequest) -> UsersGetQueryServiceResponse:
+    async def execute(
+        self, req: UsersGetQueryServiceRequest
+    ) -> UsersGetQueryServiceResponse:
         """クエリ実行処理.
 
         Args:

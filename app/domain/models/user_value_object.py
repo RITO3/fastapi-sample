@@ -8,7 +8,9 @@
     * UserFirstNameクラス
 """
 
+from app.domain.shared.error import DomainError
 import dataclasses
+from typing import List
 import uuid
 
 
@@ -24,8 +26,8 @@ class UserId:
         value (UUID): 値
     """
 
-    def __init__(self, value: uuid.UUID = uuid.uuid4()) -> None:
-        self.__value: uuid.UUID = value
+    def __init__(self, value: uuid.UUID = None) -> None:
+        self.__value: uuid.UUID = value if value is not None else uuid.uuid4()
 
     @property
     def value(self) -> uuid.UUID:
@@ -107,3 +109,9 @@ class UserLastName:
             [bool]: 同じ値かどうか
         """
         return isinstance(other, UserLastName) and (self.value == other.value)
+
+
+class UserDuplicatedError(DomainError):
+    def __init__(self, parameters: List[str]):
+        super().__init__("ユーザが重複しています。")
+        self.parameters = parameters

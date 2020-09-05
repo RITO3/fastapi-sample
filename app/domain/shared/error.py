@@ -15,13 +15,4 @@ class DomainError(Exception):
         Args:
             message (str): エラーメッセージ
         """
-        self.__message = message
-
-    @property
-    def message(self) -> str:
-        """エラーメッセージを返します.
-
-        Returns:
-            str: エラーメッセージ
-        """
-        return self.__message
+        self.message = message

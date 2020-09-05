@@ -6,14 +6,13 @@ from app.domain.models.user_value_object import (
     UserFirstName,
     UserLastName,
 )
+from app.domain.repositories.unit_of_work import UnitOfWork
+from app.domain.services.user_service import UserService
 
-from app.domain.repositories.users_repository import UsersRepository
-
+from app.application.shared.logger import Logger
 
 import dataclasses
 from abc import ABCMeta, abstractclassmethod
-
-# import inject
 
 
 @dataclasses.dataclass(frozen=True)
@@ -31,32 +30,56 @@ class UserCreateCommandResponse:
     email: Email
     first_name: UserFirstName
     last_name: UserLastName
-    # audit_time: AuditTime
 
 
 class UserCreateCommand(object):
     __metaclass__ = ABCMeta
 
     @abstractclassmethod
-    def excecute(self, request: UserCreateCommandRequest) -> UserCreateCommandResponse:
+    async def excecute(
+        self, request: UserCreateCommandRequest
+    ) -> UserCreateCommandResponse:
         raise NotImplementedError()
 
 
 class UserCreateCommandInteractor(UserCreateCommand):
-    def __init__(self, users_repository: UsersRepository) -> None:
-        self.__users_repository = users_repository
+    def __init__(
+        self, unit_of_work: UnitOfWork, user_service: UserService, logger: Logger
+    ) -> None:
+        self.__unit_of_work = unit_of_work
+        self.__user_service = user_service
+        self.__logger = logger
 
-    def excecute(self, request: UserCreateCommandRequest) -> UserCreateCommandResponse:
-        user_id = UserId()
-        new_user = User(
-            user_id,
-            request.username,
-            request.email,
-            request.first_name,
-            request.last_name,
-        )
-        user = self.__users_repository.add(new_user)
+    async def excecute(
+        self, request: UserCreateCommandRequest
+    ) -> UserCreateCommandResponse:
+        unit_of_work = self.__unit_of_work
+        users_repository = self.__unit_of_work.users_repository
+        logger = self.__logger
 
-        return UserCreateCommandResponse(
-            user.id, user.username, user.email, user.first_name, user.last_name
-        )
+        try:
+            user_id = UserId()
+            new_user = User(
+                user_id,
+                request.username,
+                request.email,
+                request.first_name,
+                request.last_name,
+            )
+
+            logger.info("Start UserCreateCommand.")
+            await unit_of_work.begin()
+
+            await self.__user_service.verify_duplicated_user(new_user)
+
+            user = await users_repository.add(new_user)
+
+            await unit_of_work.commit()
+            logger.info("End UserCreateCommand.")
+            return UserCreateCommandResponse(
+                user.id, user.username, user.email, user.first_name, user.last_name
+            )
+        except Exception as e:
+            logger.error(f"Rollback UserCreateCommand. {e}")
+            await unit_of_work.rollback()
+            raise e
