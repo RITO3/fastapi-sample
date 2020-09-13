@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: "3.8"
+    working_dir: /home/python/
+    command: "sleep infinity"
+    ports:
+      - 8000:8000
+    volumes:
+      - "../:/home/python/"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/home/python
+      - TZ=Asia/Tokyo
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+  db:
+    image: postgres:13-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ../volumes/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=app
+      - TZ=Asia/Tokyo

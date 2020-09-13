@@ -11,3 +11,9 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 # RUN apt-get update \
 #     && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+
+# pipenvのインストール
+RUN pip install pipenv==2020.6.2
+
+# プロジェクトの直下に仮想環境を作る
+ENV PIPENV_VENV_IN_PROJECT=1
