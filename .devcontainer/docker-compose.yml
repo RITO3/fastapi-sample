@@ -13,6 +13,7 @@ services:
     volumes:
       - "../:/home/python/"
     environment:
+      - PYTHONUNBUFFERED=1
       - PYTHONPATH=/home/python
       - TZ=Asia/Tokyo
       - DB_HOST=db

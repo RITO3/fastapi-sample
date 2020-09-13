@@ -26,7 +26,8 @@
 		"ms-python.vscode-pylance",
 		"njpwerner.autodocstring",
 		"littlefoxteam.vscode-python-test-adapter",
-		"ckolkman.vscode-postgres"
+		"ckolkman.vscode-postgres",
+		"eamodio.gitlens"
 	],
 	"workspaceFolder": "/home/python/"
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
