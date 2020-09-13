@@ -3,7 +3,7 @@ from app.application.query_services.users_get_query_service import (
     UsersGetQueryServiceResponse,
 )
 from app.application.commands.user_create_command import UserCreateCommand
-from app.presenter.api.dto.users import (
+from app.presenter.api.dto.user import (
     UserCreateCommandPresenter,
     UserCreateCommandRequestDto,
     UserCreateCommandResponseDto,
@@ -11,16 +11,27 @@ from app.presenter.api.dto.users import (
     UsersGetQueryServiceRequestDto,
 )
 
+
 from app.presenter.api.deps import (
     create_user_create_command,
     create_users_get_query_service,
 )
+
 from fastapi import APIRouter, Depends
 
 router = APIRouter()
 
 
-@router.get("/", response_model=UsersGetQueryServiceResponse)
+@router.get(
+    path="/",
+    responses={
+        200: {
+            "model": UsersGetQueryServiceResponse,
+            "title": "ユーザ取得",
+            "description": "ユーザ取得レスポンス",
+        }
+    },
+)
 async def get_users(
     request: UsersGetQueryServiceRequestDto = Depends(UsersGetQueryServiceRequestDto),
     query_service: UsersGetQueryService = Depends(create_users_get_query_service),
@@ -33,7 +44,16 @@ async def get_users(
     return query_result
 
 
-@router.post("/", response_model=UserCreateCommandResponseDto)
+@router.post(
+    path="/",
+    responses={
+        200: {
+            "model": UserCreateCommandResponseDto,
+            "title": "ユーザ作成成功",
+            "description": "ユーザ作成成功レスポンス",
+        }
+    },
+)
 async def create_user(
     request: UserCreateCommandRequestDto,
     command: UserCreateCommand = Depends(create_user_create_command),

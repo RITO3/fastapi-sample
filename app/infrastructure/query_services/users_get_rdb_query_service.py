@@ -18,8 +18,10 @@ class UsersGetRdbQueryService(UsersGetQueryService):
     ) -> UsersGetQueryServiceResponse:
 
         users: List[UsersGetQueryServiceUser] = []
-        query = "SELECT id,username FROM users"
-        rows = await self.__database.fetch_all(query)
+        query = "SELECT id,username FROM users LIMIT :limit OFFSET :offset"
+        values = {"limit": req.page.page_size.value, "offset": req.page.offset}
+
+        rows = await self.__database.fetch_all(query=query, values=values)
 
         for row in rows:
             users.append(

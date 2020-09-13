@@ -19,5 +19,5 @@ class UsersRdbRepository(UsersRepository):
             first_name=user.first_name.value,
             last_name=user.last_name.value,
         )
-        await self.__database.execute(query)
+        await self.__database.execute(query=query)
         return user

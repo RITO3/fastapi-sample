@@ -51,4 +51,4 @@ class Page:
         Returns:
             int: オフセット.
         """
-        return self.page_size.value * self.page_number.value
+        return self.page_size.value * (self.page_number.value - 1)

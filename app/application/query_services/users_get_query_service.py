@@ -9,16 +9,19 @@
 """
 
 from abc import ABCMeta, abstractmethod
+from app.domain.models.page import Page
 from typing import List
 from uuid import UUID
+import dataclasses
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
+@dataclasses.dataclass(frozen=True)
 class UsersGetQueryServiceRequest:
     """UsersGetQueryServiceRequestクラス."""
 
-    pass
+    page: Page
 
 
 class UsersGetQueryServiceUser(BaseModel):
@@ -31,8 +34,8 @@ class UsersGetQueryServiceUser(BaseModel):
         username (str): ユーザ名
     """
 
-    id: UUID
-    username: str
+    id: UUID = Field(..., title="ユーザID", description="ユーザID")
+    username: str = Field(..., title="ユーザ名", description="ユーザ名")
 
 
 class UsersGetQueryServiceResponse(BaseModel):
@@ -43,7 +46,9 @@ class UsersGetQueryServiceResponse(BaseModel):
         page (Page): ページ情報
     """
 
-    users: List[UsersGetQueryServiceUser]
+    users: List[UsersGetQueryServiceUser] = Field(
+        ..., title="ユーザ一覧", description="ユーザ一覧"
+    )
 
 
 class UsersGetQueryService(object):

@@ -1,3 +1,4 @@
+from app.domain.models.page import Page, PageNumber, PageSize
 from app.application.query_services.users_get_query_service import (
     UsersGetQueryServiceRequest,
 )
@@ -20,6 +21,8 @@ import uuid
 class UsersGetQueryServiceRequestDto(PageQueryParameterDto):
     """UsersGetQueryServiceDtoクラス."""
 
+    pass
+
 
 class UserCreateCommandRequestDto(BaseModel):
     """UserCreateCommandRequestDtoクラス.
@@ -38,18 +41,21 @@ class UserCreateCommandRequestDto(BaseModel):
 
 
 class UserCreateCommandResponseDto(BaseModel):
-    id: uuid.UUID
-    username: str
-    email: str
-    first_name: str
-    last_name: str
+    id: uuid.UUID = Field(..., title="ユーザID")
+    username: str = Field(..., title="ユーザ名")
+    email: str = Field(..., title="Email")
+    first_name: str = Field(..., title="名")
+    last_name: str = Field(..., title="姓")
 
 
 class UsersGetQueryServicePresenter:
     def to_query_request(
         self, request: UsersGetQueryServiceRequestDto
     ) -> UsersGetQueryServiceRequest:
-        return UsersGetQueryServiceRequest()
+        page_size = PageSize(value=request.page_size)
+        page_number = PageNumber(value=request.page_number)
+        page = Page(page_size=page_size, page_number=page_number)
+        return UsersGetQueryServiceRequest(page=page)
 
 
 class UserCreateCommandPresenter:
