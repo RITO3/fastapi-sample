@@ -24,7 +24,7 @@ def user_duplicated_error_handler(request: Request, exc: UserDuplicatedError):
     )
 
 
-async def validation_exception_handler(request: Request, exc: RequestValidationError):
+def validation_exception_handler(request: Request, exc: RequestValidationError):
     parameters: List[BadRequestParameter] = list()
     for error in exc.errors():
         parameters.append(
