@@ -32,11 +32,15 @@ $ pipenv install "uvicorn~=0.11.8"
 ```flake8```と```black```をインストールする.
 設定を```.flake8```ファイルに記述する.
 
+importのソートは```isort```を使用する.
+
+
 以下のコマンドを実行して、インストールする.
 
 ```shell
 $ pipenv install -d "flake8~=3.8.3"
 $ pipenv install -d --pre "black~=19.10b0"
+$ pipenv install -d "isort~=5.5.2"
 ```
 
 black の設定(除外対象など)は`pyproject.toml`に記述する.
@@ -44,6 +48,10 @@ black の設定(除外対象など)は`pyproject.toml`に記述する.
 `black`でフォーマットしたコードに**E231**の指摘がでるため、除外する.
 
 GitHub Issues #1289 https://github.com/psf/black/issues/1289
+
+
+
+
 
 ### ドキュメント
 
@@ -194,3 +202,4 @@ configure_error_handlers(app)
 - [databases document](https://www.encode.io/databases/)
 - [alembic](https://pypi.org/project/alembic/)
 - [Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/)
+- [isort](https://pycqa.github.io/isort/)
