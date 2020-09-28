@@ -1,12 +1,13 @@
+from typing import List
+
+from databases import Database
+
 from app.application.query_services.users_get_query_service import (
     UsersGetQueryService,
     UsersGetQueryServiceRequest,
     UsersGetQueryServiceResponse,
     UsersGetQueryServiceUser,
 )
-
-from databases import Database
-from typing import List
 
 
 class UsersGetRdbQueryService(UsersGetQueryService):

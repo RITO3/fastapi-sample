@@ -1,8 +1,8 @@
-from app.presenter.middleware.exception_handler import configure_error_handlers
 from fastapi import FastAPI
 
 from app.presenter.api.api import api_router
 from app.presenter.api.deps import get_database
+from app.presenter.middleware.exception_handler import configure_error_handlers
 
 app = FastAPI()
 

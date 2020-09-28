@@ -8,10 +8,11 @@
     * UserFirstNameクラス
 """
 
-from app.domain.shared.error import DomainError
 import dataclasses
-from typing import List
 import uuid
+from typing import List
+
+from app.domain.shared.error import DomainError
 
 
 class UserId:

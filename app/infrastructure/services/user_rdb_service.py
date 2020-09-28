@@ -1,7 +1,7 @@
+from databases import Database
+
 from app.domain.models.user import User
 from app.domain.services.user_service import UserService
-
-from databases import Database
 
 
 class UserRdbService(UserService):

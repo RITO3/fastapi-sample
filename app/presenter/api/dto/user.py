@@ -1,21 +1,18 @@
-from app.domain.models.page import Page, PageNumber, PageSize
-from app.application.query_services.users_get_query_service import (
-    UsersGetQueryServiceRequest,
-)
-from app.domain.models.user_value_object import (
-    UserName,
-    UserLastName,
-    UserFirstName,
-)
-from app.domain.models.email import Email
+import uuid
+
+from pydantic import BaseModel, EmailStr, Field
+
 from app.application.commands.user_create_command import (
     UserCreateCommandRequest,
     UserCreateCommandResponse,
 )
-
+from app.application.query_services.users_get_query_service import (
+    UsersGetQueryServiceRequest,
+)
+from app.domain.models.email import Email
+from app.domain.models.page import Page, PageNumber, PageSize
+from app.domain.models.user_value_object import UserFirstName, UserLastName, UserName
 from app.presenter.api.dto.page_dto import PageQueryParameterDto
-from pydantic import BaseModel, Field, EmailStr
-import uuid
 
 
 class UsersGetQueryServiceRequestDto(PageQueryParameterDto):

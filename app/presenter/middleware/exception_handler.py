@@ -1,12 +1,13 @@
 from typing import List
-from app.presenter.api.dto.erro_dto import BadRequestDto, BadRequestParameter
-from app.domain.models.user_value_object import UserDuplicatedError
 
 from fastapi import FastAPI, status
 from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
+
+from app.domain.models.user_value_object import UserDuplicatedError
+from app.presenter.api.dto.erro_dto import BadRequestDto, BadRequestParameter
 
 
 def user_duplicated_error_handler(request: Request, exc: UserDuplicatedError):

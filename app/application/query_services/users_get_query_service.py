@@ -8,13 +8,14 @@
 
 """
 
+import dataclasses
 from abc import ABCMeta, abstractmethod
-from app.domain.models.page import Page
 from typing import List
 from uuid import UUID
-import dataclasses
 
 from pydantic import BaseModel, Field
+
+from app.domain.models.page import Page
 
 
 @dataclasses.dataclass(frozen=True)

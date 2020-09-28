@@ -1,9 +1,8 @@
+from databases.core import Database
+
 from app.domain.models.user import User
 from app.domain.repositories.users_repository import UsersRepository
-
 from app.infrastructure.persistence.user import users
-
-from databases.core import Database
 
 
 class UsersRdbRepository(UsersRepository):

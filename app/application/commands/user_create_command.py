@@ -1,18 +1,17 @@
-from app.domain.models.user import User
+import dataclasses
+from abc import ABCMeta, abstractclassmethod
+
+from app.application.shared.logger import Logger
 from app.domain.models.email import Email
+from app.domain.models.user import User
 from app.domain.models.user_value_object import (
-    UserId,
-    UserName,
     UserFirstName,
+    UserId,
     UserLastName,
+    UserName,
 )
 from app.domain.repositories.unit_of_work import UnitOfWork
 from app.domain.services.user_service import UserService
-
-from app.application.shared.logger import Logger
-
-import dataclasses
-from abc import ABCMeta, abstractclassmethod
 
 
 @dataclasses.dataclass(frozen=True)
