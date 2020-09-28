@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/vscode/devcontainers/python:0-${VARIANT}
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
 # pipenvのインストール
-RUN pip install pipenv==2020.6.2
+RUN pip install pipenv==2020.8.13
 
 # プロジェクトの直下に仮想環境を作る
 ENV PIPENV_VENV_IN_PROJECT=1
