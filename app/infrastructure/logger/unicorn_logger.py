@@ -1,7 +1,7 @@
-from app.application.shared.logger import Logger
-
-from typing import Any
 import logging
+from typing import Any
+
+from app.application.shared.logger import Logger
 
 
 class UnicornLogger(Logger):

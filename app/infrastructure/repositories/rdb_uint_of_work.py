@@ -1,11 +1,11 @@
-from app.domain.repositories.users_repository import UsersRepository
-from app.domain.repositories.unit_of_work import UnitOfWork
-
 from typing import Union
+
+from asyncpg.exceptions import UniqueViolationError
 from databases import Database
 from databases.core import Transaction
 
-from asyncpg.exceptions import UniqueViolationError
+from app.domain.repositories.unit_of_work import UnitOfWork
+from app.domain.repositories.users_repository import UsersRepository
 
 
 class RdbUnitOfWork(UnitOfWork):

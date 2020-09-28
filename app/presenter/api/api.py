@@ -1,7 +1,7 @@
-from app.presenter.api.dto.erro_dto import BadRequestDto
-from app.presenter.api.endpoints import users
 from fastapi import APIRouter
 
+from app.presenter.api.dto.erro_dto import BadRequestDto
+from app.presenter.api.endpoints import users
 
 api_router = APIRouter()
 

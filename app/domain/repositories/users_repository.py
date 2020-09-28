@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractclassmethod
-from app.domain.repositories.repository import Repository
 
 from app.domain.models.user import User
+from app.domain.repositories.repository import Repository
 
 
 class UsersRepository(Repository):

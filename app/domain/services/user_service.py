@@ -1,7 +1,8 @@
-from app.domain.models.user_value_object import UserDuplicatedError
-from typing import List
-from app.domain.models.user import User
 from abc import ABCMeta, abstractmethod
+from typing import List
+
+from app.domain.models.user import User
+from app.domain.models.user_value_object import UserDuplicatedError
 
 
 class UserService(object):

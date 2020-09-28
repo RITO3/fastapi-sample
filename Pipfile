@@ -8,6 +8,7 @@ flake8 = "~=3.8.3"
 pydocstyle = "~=5.0.2"
 flake8-docstrings = "~=1.5.0"
 black = "~=19.10b0"
+isort = "~=5.5.2"
 
 [packages]
 fastapi = "~=0.61.0"
@@ -27,8 +28,12 @@ ci_init = "mkdir -p ci_result"
 lint = "flake8"
 lint_output = "flake8 --format=pylint --output-file=ci_result/flak8.out"
 lint_output_code = "flake8 --show-source"
+
+sort = "isort ./app"
 format = "black . --config pyproject.toml"
 format_check = "black . --check --config pyproject.toml"
+
+
 
 [pipenv]
 allow_prereleases = true

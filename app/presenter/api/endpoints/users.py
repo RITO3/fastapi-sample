@@ -1,8 +1,14 @@
+from fastapi import APIRouter, Depends
+
+from app.application.commands.user_create_command import UserCreateCommand
 from app.application.query_services.users_get_query_service import (
     UsersGetQueryService,
     UsersGetQueryServiceResponse,
 )
-from app.application.commands.user_create_command import UserCreateCommand
+from app.presenter.api.deps import (
+    create_user_create_command,
+    create_users_get_query_service,
+)
 from app.presenter.api.dto.user import (
     UserCreateCommandPresenter,
     UserCreateCommandRequestDto,
@@ -10,14 +16,6 @@ from app.presenter.api.dto.user import (
     UsersGetQueryServicePresenter,
     UsersGetQueryServiceRequestDto,
 )
-
-
-from app.presenter.api.deps import (
-    create_user_create_command,
-    create_users_get_query_service,
-)
-
-from fastapi import APIRouter, Depends
 
 router = APIRouter()
 
