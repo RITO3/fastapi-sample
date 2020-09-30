@@ -69,7 +69,7 @@ class UserCreateCommandInteractor(UserCreateCommand):
             logger.info("Start UserCreateCommand.")
             await unit_of_work.begin()
 
-            await self.__user_service.verify_duplicated_user(new_user)
+            await self.__user_service.verify_duplicate_user(new_user)
 
             user = await users_repository.add(new_user)
 
