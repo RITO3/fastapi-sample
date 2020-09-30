@@ -11,3 +11,17 @@ exclude = '''
   | \dist
 )/
 '''
+
+
+[tool.pytest.ini_options]
+minversion = "6.1"
+addopts = '''
+  -v
+  --junitxml=ci_result/junit.xml
+  --cov app
+  --cov-report html:ci_result/html-cov
+  --cov-report xml:ci_result/cov.xml
+'''
+testpaths = [
+  "tests",
+]

@@ -192,6 +192,52 @@ main.pyで以下のように記述する.
 ```python
 configure_error_handlers(app)
 ```
+### テスト
+
+テストライブラリとして、```pytest```を使用する.
+
+非同期処理のテストには```pytest-asyncio```を使用する.
+
+カバレッジの計測には、
+
+
+インストール
+
+```shell
+$ pipenv install -d "pytest~=6.1.0"
+$ pipenv install -d "pytest-asyncio~=0.14.0"
+$ pipenv install -d "pytest-cov~=2.10.1"
+```
+
+設定は、**pyproject.toml**に記述する.
+
+```ini
+[tool.pytest.ini_options]
+minversion = "6.1"
+addopts = '''
+  -v
+  --junitxml=ci_result/junit.xml
+  --cov app
+  --cov-report html:ci_result/html-cov
+  --cov-report xml:ci_result/cov.xml
+'''
+testpaths = [
+  "tests",
+]
+```
+
+**addopts**にコマンドパラメータを指定するが、長くなると読みにくいため```'''```を使って記述する.
+
+
+
+カバレッジの設定は、**.coveragerc**に記述する.
+
+カバレッジ設定は、以下のサイトを参考にした.
+
+https://pytest-cov.readthedocs.io/en/latest/config.html
+
+レポートの出力の設定は、コマンドのパラメータで指定する.
+
 
 
 ## 参考URL
@@ -203,3 +249,11 @@ configure_error_handlers(app)
 - [alembic](https://pypi.org/project/alembic/)
 - [Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/)
 - [isort](https://pycqa.github.io/isort/)
+- [pytest](https://pypi.org/project/pytest/)
+- [pytest 使い方まとめ](https://dev.classmethod.jp/articles/pytest-getting-started/)
+- [すぐに使えるpytestによるカバレッジ計測のコマンド](https://qiita.com/kg1/items/e2fc65e4189faf50bfe6)
+- [pytest：フィクスチャ(fixture)の使い方](https://qiita.com/_akiyama_/items/9ead227227d669b0564e)
+- [pytest ヘビー🐍ユーザーへの第一歩](https://www.m3tech.blog/entry/pytest-summary)
+- [pytest-cov’s documentation](https://pytest-cov.readthedocs.io/en/latest/)
+- [pytest Configuration](https://docs.pytest.org/en/stable/customize.html)
+- [pytest-cov config](https://pytest-cov.readthedocs.io/en/latest/config.html)
