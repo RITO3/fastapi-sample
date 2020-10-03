@@ -194,19 +194,21 @@ configure_error_handlers(app)
 ```
 ### テスト
 
+
+### ライブラリのインストール
+
 テストライブラリとして、```pytest```を使用する.
+非同期処理のテストには、```pytest-asyncio```を使用する.
+HTMLのテストレポートには、```pytest-html```を使用する.
+カバレッジの計測には、```pytest-cov```を使用する.
 
-非同期処理のテストには```pytest-asyncio```を使用する.
-
-カバレッジの計測には、
-
-
-インストール
+以下のコマンドを実行して、インストールする.
 
 ```shell
-$ pipenv install -d "pytest~=6.1.0"
-$ pipenv install -d "pytest-asyncio~=0.14.0"
-$ pipenv install -d "pytest-cov~=2.10.1"
+$ pipenv install -d "pytest~=6.1.0"           # テストライブラリ
+$ pipenv install -d "pytest-asyncio~=0.14.0"　# 非同期処理テスト用ライブラリ
+$ pipenv install -d "pytest-html~=2.1.1"      # HTMLレポートライブラリ
+$ pipenv install -d "pytest-cov~=2.10.1"      # カバレッジ計測
 ```
 
 設定は、**pyproject.toml**に記述する.
@@ -229,6 +231,40 @@ testpaths = [
 **addopts**にコマンドパラメータを指定するが、長くなると読みにくいため```'''```を使って記述する.
 
 
+### HTMLレポートの出力
+
+テスト結果の表にdocstringを表示させる場合、**conftest.py**で自分で処理を記述する必要がある.
+
+
+```python
+from datetime import datetime
+from typing import List
+from py.xml import Tag, html
+import pytest
+
+
+def pytest_html_results_table_header(cells: List[Tag]):
+    cells.insert(1, html.th("Test Case"))
+    cells.insert(2, html.th("Time", class_="sortable time", col="time"))
+    cells.pop()
+
+
+def pytest_html_results_table_row(report, cells: List[Tag]) -> None:
+    cells.insert(1, html.td(report.description))
+    cells.insert(2, html.td(str(datetime.now()), class_="col-time"))
+    cells.pop()
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    report.description = str(item.function.__doc__)
+
+```
+
+
+### カバレッジの計測
 
 カバレッジの設定は、**.coveragerc**に記述する.
 
@@ -236,8 +272,30 @@ testpaths = [
 
 https://pytest-cov.readthedocs.io/en/latest/config.html
 
-レポートの出力の設定は、コマンドのパラメータで指定する.
+カバレッジレポートの出力の設定は、コマンドのパラメータで指定する.
 
+
+
+
+
+
+### Visual Studio Codeの設定
+
+#### テストエクスプローラーの設定
+
+```pytest```を実行できるように、**settings.json**を以下のように記述する.
+
+```json
+    "pythonTestExplorer.testFramework": "pytest",
+    "python.testing.pytestEnabled": true,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestPath": ".venv/bin/pytest",
+```
+
+#### カバレッジの表示
+
+カバレッジを表示するには、```ryanluker.vscode-coverage-gutters```を使用する.
 
 
 ## 参考URL
@@ -257,3 +315,4 @@ https://pytest-cov.readthedocs.io/en/latest/config.html
 - [pytest-cov’s documentation](https://pytest-cov.readthedocs.io/en/latest/)
 - [pytest Configuration](https://docs.pytest.org/en/stable/customize.html)
 - [pytest-cov config](https://pytest-cov.readthedocs.io/en/latest/config.html)
+- [pytest-html](https://github.com/pytest-dev/pytest-html)

@@ -18,6 +18,7 @@ minversion = "6.1"
 addopts = '''
   -v
   --junitxml=ci_result/junit.xml
+  --html=ci_result/report.html --self-contained-html  
   --cov app
   --cov-report html:ci_result/html-cov
   --cov-report xml:ci_result/cov.xml

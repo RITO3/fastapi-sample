@@ -13,5 +13,5 @@ test:
 ci:
 	pipenv run ci_clean
 	pipenv run ci_init
-	pipenv run lint_output
 	pipenv run test
+	pipenv run lint_output
