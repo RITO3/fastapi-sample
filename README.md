@@ -233,7 +233,7 @@ testpaths = [
 
 ### HTMLレポートの出力
 
-テスト結果の表にdocstringを表示させる場合、**conftest.py**で自分で処理を記述する必要がある.
+テスト結果の表にdocstringを表示させる場合、**conftest.py**に自分で処理を記述する必要がある.
 
 
 ```python
