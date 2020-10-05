@@ -201,6 +201,8 @@ configure_error_handlers(app)
 非同期処理のテストには、```pytest-asyncio```を使用する.
 HTMLのテストレポートには、```pytest-html```を使用する.
 カバレッジの計測には、```pytest-cov```を使用する.
+モックライブラリとして、```pytest-mock```を使用する.
+非同期通信のテストには、```httpx```を使用する.
 
 以下のコマンドを実行して、インストールする.
 
@@ -209,6 +211,8 @@ $ pipenv install -d "pytest~=6.1.0"           # テストライブラリ
 $ pipenv install -d "pytest-asyncio~=0.14.0"　# 非同期処理テスト用ライブラリ
 $ pipenv install -d "pytest-html~=2.1.1"      # HTMLレポートライブラリ
 $ pipenv install -d "pytest-cov~=2.10.1"      # カバレッジ計測
+$ pipenv install -d "pytest-mock~=3.3.1"      # モックライブラリ
+$ pipenv install -d "httpx~=0.15.5"
 ```
 
 設定は、**pyproject.toml**に記述する.
@@ -316,3 +320,5 @@ https://pytest-cov.readthedocs.io/en/latest/config.html
 - [pytest Configuration](https://docs.pytest.org/en/stable/customize.html)
 - [pytest-cov config](https://pytest-cov.readthedocs.io/en/latest/config.html)
 - [pytest-html](https://github.com/pytest-dev/pytest-html)
+- [pytest-mock](https://pypi.org/project/pytest-mock/)
+- [pytest-mock使ってハマったこと ](https://tech.uzabase.com/entry/2019/10/21/185414)

@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import List
-from py.xml import Tag, html
+
 import pytest
+from py.xml import Tag, html
 
 
 def pytest_html_results_table_header(cells: List[Tag]):

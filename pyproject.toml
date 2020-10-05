@@ -17,6 +17,7 @@ exclude = '''
 minversion = "6.1"
 addopts = '''
   -v
+  -s
   --junitxml=ci_result/junit.xml
   --html=ci_result/report.html --self-contained-html  
   --cov app
