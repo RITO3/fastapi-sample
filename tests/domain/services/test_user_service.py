@@ -1,4 +1,5 @@
 import pytest
+from pytest_mock import MockerFixture
 
 from app.domain.models.email import Email
 from app.domain.models.user import User
@@ -25,32 +26,61 @@ def test_user() -> User:
 
 class TestUserService(object):
     @pytest.mark.asyncio
-    async def test_OK_verify_duplicate_user(self, test_user: User) -> None:
-        """[正常系]ユーザの重複チェックで例外が投げられない."""
+    async def test_OK_verify_duplicate_user(
+        self, mocker: MockerFixture, test_user: User
+    ) -> None:
+        """[正常系]重複したユーザが存在しない."""
 
-        class UserServiceImpl(UserService):
-            async def duplicate_username(self, user: User) -> bool:
-                return False
+        user_service = UserService()
+        user_service_duplicate_username = mocker.patch.object(
+            user_service, "duplicate_username", return_value=False
+        )
+        user_service_duplicate_email = mocker.patch.object(
+            user_service, "duplicate_email", return_value=False
+        )
 
-            async def duplicate_email(self, user: User) -> bool:
-                return False
-
-        user_service = UserServiceImpl()
         await user_service.verify_duplicate_user(user=test_user)
+        assert user_service_duplicate_username.call_count == 1
+        assert user_service_duplicate_email.call_count == 1
 
     @pytest.mark.asyncio
     async def test_NG_verify_duplicate_user_when_duplicate_username(
-        self, test_user: User
+        self, mocker: MockerFixture, test_user: User
     ) -> None:
         """[異常系]ユーザの重複チェックで例外が投げられる(ユーザ名が重複)."""
 
-        class UserServiceImpl(UserService):
-            async def duplicate_username(self, user: User) -> bool:
-                return True
+        user_service = UserService()
+        user_service_duplicate_username = mocker.patch.object(
+            user_service, "duplicate_username", return_value=True
+        )
+        user_service_duplicate_email = mocker.patch.object(
+            user_service, "duplicate_email", return_value=False
+        )
 
-            async def duplicate_email(self, user: User) -> bool:
-                return False
-
-        with pytest.raises(UserDuplicatedError):
-            user_service = UserServiceImpl()
+        with pytest.raises(UserDuplicatedError) as e:
             await user_service.verify_duplicate_user(user=test_user)
+
+        assert user_service_duplicate_username.call_count == 1
+        assert user_service_duplicate_email.call_count == 1
+        assert e.value.parameters == ["username"]
+
+    @pytest.mark.asyncio
+    async def test_NG_verify_duplicate_user_when_duplicate_email(
+        self, mocker: MockerFixture, test_user: User
+    ) -> None:
+        """[異常系]ユーザの重複チェックで例外が投げられる(Emailが重複)."""
+
+        user_service = UserService()
+        user_service_duplicate_username = mocker.patch.object(
+            user_service, "duplicate_username", return_value=False
+        )
+        user_service_duplicate_email = mocker.patch.object(
+            user_service, "duplicate_email", return_value=True
+        )
+
+        with pytest.raises(UserDuplicatedError) as e:
+            await user_service.verify_duplicate_user(user=test_user)
+
+        assert user_service_duplicate_username.call_count == 1
+        assert user_service_duplicate_email.call_count == 1
+        assert e.value.parameters == ["email"]
