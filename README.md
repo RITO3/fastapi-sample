@@ -212,7 +212,7 @@ $ pipenv install -d "pytest-asyncio~=0.14.0"　# 非同期処理テスト用ラ�
 $ pipenv install -d "pytest-html~=2.1.1"      # HTMLレポートライブラリ
 $ pipenv install -d "pytest-cov~=2.10.1"      # カバレッジ計測
 $ pipenv install -d "pytest-mock~=3.3.1"      # モックライブラリ
-$ pipenv install -d "httpx~=0.15.5"
+$ pipenv install -d "httpx~=0.15.5"           # 非同期通信のライブラリ
 ```
 
 設定は、**pyproject.toml**に記述する.
@@ -279,7 +279,40 @@ https://pytest-cov.readthedocs.io/en/latest/config.html
 カバレッジレポートの出力の設定は、コマンドのパラメータで指定する.
 
 
+### プレゼンテーション層のテスト
 
+コントローラと例外ハンドラーを一緒にテストする.
+
+```yeild```を用いたフィクスチャを使用する.
+
+```create_application```関数で、FastAPIのインスタンスを作成し、ルーティングの設定、例外ハンドラーの登録を行う.
+
+```app.dependency_overrides.clear```メソッドで、依存関係をリセットし、必要な設定だけ記述する.
+
+```python
+@pytest.fixture(scope="function")
+async def test_OK_get_users_client(mocker: MockerFixture):
+    app = create_application()
+    app.dependency_overrides.clear()
+
+    def mock_users_get_query_service():
+        users: List[UsersGetQueryServiceUser] = list()
+        users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser1"))
+        users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser2"))
+        test_response = UsersGetQueryServiceResponse(users=users)
+        mock_users_get_query_service = mocker.Mock(UsersGetQueryService)
+        mocker.patch.object(
+            mock_users_get_query_service, "execute", return_value=test_response
+        )
+        return mock_users_get_query_service
+
+    app.dependency_overrides.setdefault(
+        create_users_get_query_service, mock_users_get_query_service
+    )
+
+    async with AsyncClient(app=app, base_url="http://localhost") as client:
+        yield client
+```
 
 
 
