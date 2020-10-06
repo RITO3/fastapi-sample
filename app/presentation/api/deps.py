@@ -17,7 +17,7 @@ from app.infrastructure.query_services.users_get_rdb_query_service import (
 from app.infrastructure.repositories.rdb_uint_of_work import RdbUnitOfWork
 from app.infrastructure.repositories.users_rdb_repository import UsersRdbRepository
 from app.infrastructure.services.user_rdb_service import UserRdbService
-from app.presenter.api.db import database
+from app.presentation.api.db import database
 
 
 def get_logger() -> Logger:

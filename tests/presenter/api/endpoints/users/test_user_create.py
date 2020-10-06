@@ -15,7 +15,7 @@ from app.domain.models.user_value_object import (
     UserName,
 )
 from app.main import create_application
-from app.presenter.api.deps import create_user_create_command
+from app.presentation.api.deps import create_user_create_command
 
 
 @pytest.fixture(scope="function")

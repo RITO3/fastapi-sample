@@ -11,7 +11,7 @@ from app.application.query_services.users_get_query_service import (
     UsersGetQueryServiceUser,
 )
 from app.main import create_application
-from app.presenter.api.deps import create_users_get_query_service
+from app.presentation.api.deps import create_users_get_query_service
 
 
 @pytest.fixture(scope="function")

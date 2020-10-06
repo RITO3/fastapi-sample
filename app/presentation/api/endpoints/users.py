@@ -5,11 +5,11 @@ from app.application.query_services.users_get_query_service import (
     UsersGetQueryService,
     UsersGetQueryServiceResponse,
 )
-from app.presenter.api.deps import (
+from app.presentation.api.deps import (
     create_user_create_command,
     create_users_get_query_service,
 )
-from app.presenter.api.dto.user import (
+from app.presentation.api.dto.user import (
     UserCreateCommandPresenter,
     UserCreateCommandRequestDto,
     UserCreateCommandResponseDto,

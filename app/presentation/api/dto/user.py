@@ -12,7 +12,7 @@ from app.application.query_services.users_get_query_service import (
 from app.domain.models.email import Email
 from app.domain.models.page import Page, PageNumber, PageSize
 from app.domain.models.user_value_object import UserFirstName, UserLastName, UserName
-from app.presenter.api.dto.page_dto import PageQueryParameterDto
+from app.presentation.api.dto.page_dto import PageQueryParameterDto
 
 
 class UsersGetQueryServiceRequestDto(PageQueryParameterDto):
