@@ -19,7 +19,7 @@ async def test_OK_get_users_client(mocker: MockerFixture):
     app = create_application()
     app.dependency_overrides.clear()
 
-    def mock_create_users_get_query_service():
+    def mock_users_get_query_service():
         users: List[UsersGetQueryServiceUser] = list()
         users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser1"))
         users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser2"))
@@ -31,7 +31,7 @@ async def test_OK_get_users_client(mocker: MockerFixture):
         return mock_users_get_query_service
 
     app.dependency_overrides.setdefault(
-        create_users_get_query_service, mock_create_users_get_query_service
+        create_users_get_query_service, mock_users_get_query_service
     )
 
     async with AsyncClient(app=app, base_url="http://localhost") as client:
@@ -64,7 +64,7 @@ class TestUsersGet(object):
         assert json_obj["users"][1]["username"] == "testuser2"
 
     @pytest.mark.asyncio
-    async def test_NG_get_users_with_pagination_alphabet(
+    async def test_NG_get_users_with_invalid_pagination_alphabet(
         self, test_OK_get_users_client: AsyncClient
     ) -> None:
         """[異常系]ユーザを取得することができない(ページネーションパラメータ誤り アルファベット)."""
@@ -82,7 +82,7 @@ class TestUsersGet(object):
         }
 
     @pytest.mark.asyncio
-    async def test_NG_get_users_with_pagination_number(
+    async def test_NG_get_users_with_invalid_pagination_number(
         self, test_OK_get_users_client: AsyncClient
     ) -> None:
         """[異常系]ユーザを取得することができない(ページネーションパラメータ誤り 数値)."""

@@ -4,6 +4,7 @@ import pytest
 from pytest_mock import MockerFixture
 
 from app.application.commands.user_create_command import (
+    UserCreateCommand,
     UserCreateCommandInteractor,
     UserCreateCommandRequest,
 )
@@ -20,6 +21,16 @@ from app.domain.models.user_value_object import (
 from app.domain.repositories.unit_of_work import UnitOfWork
 from app.domain.repositories.users_repository import UsersRepository
 from app.domain.services.user_service import UserService
+
+
+class TestUserCreateCommand(object):
+    @pytest.mark.asyncio
+    async def test_NG_execute_when_not_iplemented(self, mocker: MockerFixture) -> None:
+        """[異常系]UserCreateCommandクラスのexecuteメソッドが未実装で例外が投げられる."""
+        command = UserCreateCommand()
+        mock_request = mocker.Mock(UserCreateCommandRequest)
+        with pytest.raises(NotImplementedError):
+            await command.execute(mock_request)
 
 
 @pytest.fixture(scope="function")
@@ -73,7 +84,7 @@ class TestUserCreateCommandInteractor(object):
             logger=mock_logger,
         )
 
-        response = await interactor.excecute(test_request)
+        response = await interactor.execute(test_request)
 
         assert mock_logger_info.call_count == 2
 
@@ -120,7 +131,7 @@ class TestUserCreateCommandInteractor(object):
         )
 
         with pytest.raises(Exception) as e:
-            await interactor.excecute(test_request)
+            await interactor.execute(test_request)
 
         assert mock_logger_info.call_count == 1
         assert mock_logger_error.call_count == 1

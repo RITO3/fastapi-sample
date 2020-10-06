@@ -35,7 +35,7 @@ class UserCreateCommand(object):
     __metaclass__ = ABCMeta
 
     @abstractclassmethod
-    async def excecute(
+    async def execute(
         self, request: UserCreateCommandRequest
     ) -> UserCreateCommandResponse:
         raise NotImplementedError()
@@ -48,7 +48,7 @@ class UserCreateCommandInteractor(UserCreateCommand):
     user_service: UserService
     logger: Logger
 
-    async def excecute(
+    async def execute(
         self, request: UserCreateCommandRequest
     ) -> UserCreateCommandResponse:
 
@@ -66,13 +66,16 @@ class UserCreateCommandInteractor(UserCreateCommand):
             await self.unit_of_work.begin()
 
             await self.user_service.verify_duplicate_user(new_user)
-
-            user = await self.unit_of_work.users_repository.add(new_user)
+            created_user = await self.unit_of_work.users_repository.add(new_user)
 
             await self.unit_of_work.commit()
             self.logger.info("End UserCreateCommand.")
             return UserCreateCommandResponse(
-                user.id, user.username, user.email, user.first_name, user.last_name
+                id=created_user.id,
+                username=created_user.username,
+                email=created_user.email,
+                first_name=created_user.first_name,
+                last_name=created_user.last_name,
             )
         except Exception as e:
             self.logger.error(f"Rollback UserCreateCommand. {e}")
