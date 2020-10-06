@@ -1,3 +1,10 @@
 [run]
 omit = tests/*
        .venv/*
+       **/__init__.py
+       **/main.py
+       **/deps.py
+       **/db.py
+       **/base.py
+       **/base_metadata.py
+       app/infrastructure/persistence/**.py

@@ -192,6 +192,147 @@ main.pyで以下のように記述する.
 ```python
 configure_error_handlers(app)
 ```
+### テスト
+
+
+### ライブラリのインストール
+
+テストライブラリとして、```pytest```を使用する.
+非同期処理のテストには、```pytest-asyncio```を使用する.
+HTMLのテストレポートには、```pytest-html```を使用する.
+カバレッジの計測には、```pytest-cov```を使用する.
+モックライブラリとして、```pytest-mock```を使用する.
+非同期通信のテストには、```httpx```を使用する.
+
+以下のコマンドを実行して、インストールする.
+
+```shell
+$ pipenv install -d "pytest~=6.1.0"           # テストライブラリ
+$ pipenv install -d "pytest-asyncio~=0.14.0"　# 非同期処理テスト用ライブラリ
+$ pipenv install -d "pytest-html~=2.1.1"      # HTMLレポートライブラリ
+$ pipenv install -d "pytest-cov~=2.10.1"      # カバレッジ計測
+$ pipenv install -d "pytest-mock~=3.3.1"      # モックライブラリ
+$ pipenv install -d "httpx~=0.15.5"           # 非同期通信のライブラリ
+```
+
+設定は、**pyproject.toml**に記述する.
+
+```ini
+[tool.pytest.ini_options]
+minversion = "6.1"
+addopts = '''
+  -v
+  --junitxml=ci_result/junit.xml
+  --cov app
+  --cov-report html:ci_result/html-cov
+  --cov-report xml:ci_result/cov.xml
+'''
+testpaths = [
+  "tests",
+]
+```
+
+**addopts**にコマンドパラメータを指定するが、長くなると読みにくいため```'''```を使って記述する.
+
+
+### HTMLレポートの出力
+
+テスト結果の表にdocstringを表示させる場合、**conftest.py**に自分で処理を記述する必要がある.
+
+
+```python
+from datetime import datetime
+from typing import List
+from py.xml import Tag, html
+import pytest
+
+
+def pytest_html_results_table_header(cells: List[Tag]):
+    cells.insert(1, html.th("Test Case"))
+    cells.insert(2, html.th("Time", class_="sortable time", col="time"))
+    cells.pop()
+
+
+def pytest_html_results_table_row(report, cells: List[Tag]) -> None:
+    cells.insert(1, html.td(report.description))
+    cells.insert(2, html.td(str(datetime.now()), class_="col-time"))
+    cells.pop()
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+    report.description = str(item.function.__doc__)
+
+```
+
+
+### カバレッジの計測
+
+カバレッジの設定は、**.coveragerc**に記述する.
+
+カバレッジ設定は、以下のサイトを参考にした.
+
+https://pytest-cov.readthedocs.io/en/latest/config.html
+
+カバレッジレポートの出力の設定は、コマンドのパラメータで指定する.
+
+
+### プレゼンテーション層のテスト
+
+コントローラと例外ハンドラーを一緒にテストする.
+
+```yeild```を用いたフィクスチャを使用する.
+
+```create_application```関数で、FastAPIのインスタンスを作成し、ルーティングの設定、例外ハンドラーの登録を行う.
+
+```app.dependency_overrides.clear```メソッドで、依存関係をリセットし、必要な設定だけ記述する.
+
+```python
+@pytest.fixture(scope="function")
+async def test_OK_get_users_client(mocker: MockerFixture):
+    app = create_application()
+    app.dependency_overrides.clear()
+
+    def mock_users_get_query_service():
+        users: List[UsersGetQueryServiceUser] = list()
+        users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser1"))
+        users.append(UsersGetQueryServiceUser(id=uuid.uuid4(), username="testuser2"))
+        test_response = UsersGetQueryServiceResponse(users=users)
+        mock_users_get_query_service = mocker.Mock(UsersGetQueryService)
+        mocker.patch.object(
+            mock_users_get_query_service, "execute", return_value=test_response
+        )
+        return mock_users_get_query_service
+
+    app.dependency_overrides.setdefault(
+        create_users_get_query_service, mock_users_get_query_service
+    )
+
+    async with AsyncClient(app=app, base_url="http://localhost") as client:
+        yield client
+```
+
+
+
+### Visual Studio Codeの設定
+
+#### テストエクスプローラーの設定
+
+```pytest```を実行できるように、**settings.json**を以下のように記述する.
+
+```json
+    "pythonTestExplorer.testFramework": "pytest",
+    "python.testing.pytestEnabled": true,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestPath": ".venv/bin/pytest",
+```
+
+#### カバレッジの表示
+
+カバレッジを表示するには、```ryanluker.vscode-coverage-gutters```を使用する.
 
 
 ## 参考URL
@@ -203,3 +344,14 @@ configure_error_handlers(app)
 - [alembic](https://pypi.org/project/alembic/)
 - [Handling Errors](https://fastapi.tiangolo.com/tutorial/handling-errors/)
 - [isort](https://pycqa.github.io/isort/)
+- [pytest](https://pypi.org/project/pytest/)
+- [pytest 使い方まとめ](https://dev.classmethod.jp/articles/pytest-getting-started/)
+- [すぐに使えるpytestによるカバレッジ計測のコマンド](https://qiita.com/kg1/items/e2fc65e4189faf50bfe6)
+- [pytest：フィクスチャ(fixture)の使い方](https://qiita.com/_akiyama_/items/9ead227227d669b0564e)
+- [pytest ヘビー🐍ユーザーへの第一歩](https://www.m3tech.blog/entry/pytest-summary)
+- [pytest-cov’s documentation](https://pytest-cov.readthedocs.io/en/latest/)
+- [pytest Configuration](https://docs.pytest.org/en/stable/customize.html)
+- [pytest-cov config](https://pytest-cov.readthedocs.io/en/latest/config.html)
+- [pytest-html](https://github.com/pytest-dev/pytest-html)
+- [pytest-mock](https://pypi.org/project/pytest-mock/)
+- [pytest-mock使ってハマったこと ](https://tech.uzabase.com/entry/2019/10/21/185414)

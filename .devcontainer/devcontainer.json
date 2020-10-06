@@ -27,7 +27,10 @@
 		"njpwerner.autodocstring",
 		"littlefoxteam.vscode-python-test-adapter",
 		"ckolkman.vscode-postgres",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"ryanluker.vscode-coverage-gutters",
+		"bungcip.better-toml",
+		"DotJoshJohnson.xml"
 	],
 	"workspaceFolder": "/home/python/"
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

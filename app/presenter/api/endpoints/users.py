@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 from app.application.commands.user_create_command import UserCreateCommand
 from app.application.query_services.users_get_query_service import (
@@ -45,12 +45,13 @@ async def get_users(
 @router.post(
     path="/",
     responses={
-        200: {
+        201: {
             "model": UserCreateCommandResponseDto,
             "title": "ユーザ作成成功",
             "description": "ユーザ作成成功レスポンス",
         }
     },
+    status_code=status.HTTP_201_CREATED,
 )
 async def create_user(
     request: UserCreateCommandRequestDto,
@@ -60,7 +61,7 @@ async def create_user(
 
     command_request = presenter.to_command_request(request)
 
-    command_result = await command.excecute(command_request)
+    command_result = await command.execute(command_request)
 
     response = presenter.to_response_dto(command_result)
 

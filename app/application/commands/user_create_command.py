@@ -35,50 +35,49 @@ class UserCreateCommand(object):
     __metaclass__ = ABCMeta
 
     @abstractclassmethod
-    async def excecute(
+    async def execute(
         self, request: UserCreateCommandRequest
     ) -> UserCreateCommandResponse:
         raise NotImplementedError()
 
 
+@dataclasses.dataclass(frozen=True)
 class UserCreateCommandInteractor(UserCreateCommand):
-    def __init__(
-        self, unit_of_work: UnitOfWork, user_service: UserService, logger: Logger
-    ) -> None:
-        self.__unit_of_work = unit_of_work
-        self.__user_service = user_service
-        self.__logger = logger
 
-    async def excecute(
+    unit_of_work: UnitOfWork
+    user_service: UserService
+    logger: Logger
+
+    async def execute(
         self, request: UserCreateCommandRequest
     ) -> UserCreateCommandResponse:
-        unit_of_work = self.__unit_of_work
-        users_repository = self.__unit_of_work.users_repository
-        logger = self.__logger
 
         try:
             user_id = UserId()
             new_user = User(
-                user_id,
-                request.username,
-                request.email,
-                request.first_name,
-                request.last_name,
+                id=user_id,
+                username=request.username,
+                email=request.email,
+                first_name=request.first_name,
+                last_name=request.last_name,
             )
 
-            logger.info("Start UserCreateCommand.")
-            await unit_of_work.begin()
+            self.logger.info("Start UserCreateCommand.")
+            await self.unit_of_work.begin()
 
-            await self.__user_service.verify_duplicated_user(new_user)
+            await self.user_service.verify_duplicate_user(new_user)
+            created_user = await self.unit_of_work.users_repository.add(new_user)
 
-            user = await users_repository.add(new_user)
-
-            await unit_of_work.commit()
-            logger.info("End UserCreateCommand.")
+            await self.unit_of_work.commit()
+            self.logger.info("End UserCreateCommand.")
             return UserCreateCommandResponse(
-                user.id, user.username, user.email, user.first_name, user.last_name
+                id=created_user.id,
+                username=created_user.username,
+                email=created_user.email,
+                first_name=created_user.first_name,
+                last_name=created_user.last_name,
             )
         except Exception as e:
-            logger.error(f"Rollback UserCreateCommand. {e}")
-            await unit_of_work.rollback()
+            self.logger.error(f"Rollback UserCreateCommand. {e}")
+            await self.unit_of_work.rollback()
             raise e

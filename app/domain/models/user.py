@@ -18,15 +18,19 @@ from app.domain.models.user_value_object import (
 
 class User:
     """ユーザクラス.
+
     Attributes:
-        user_id (UserId): ユーザID
+        id (UserId): ユーザID
         username (UserName): ユーザ名
+        email (Email): Eメール
+        first_name (UserFirstName): 名
+        last_name (UserLastName): 姓
     """
 
     def __init__(
         self,
-        user_id: UserId,
-        user_name: UserName,
+        id: UserId,
+        username: UserName,
         email: Email,
         first_name: UserFirstName,
         last_name: UserLastName,
@@ -37,8 +41,8 @@ class User:
             user_id (UserId): ユーザID
             username (UserName): ユーザ名
         """
-        self.__id = user_id
-        self.__username = user_name
+        self.__id = id
+        self.__username = username
         self.__email = email
         self.__first_name = first_name
         self.__last_name = last_name

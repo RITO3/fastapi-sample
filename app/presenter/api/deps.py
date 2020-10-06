@@ -7,7 +7,6 @@ from app.application.commands.user_create_command import (
 )
 from app.application.query_services.users_get_query_service import UsersGetQueryService
 from app.application.shared.logger import Logger
-from app.config.settings import Settings
 from app.domain.repositories.unit_of_work import UnitOfWork
 from app.domain.repositories.users_repository import UsersRepository
 from app.domain.services.user_service import UserService
@@ -18,20 +17,11 @@ from app.infrastructure.query_services.users_get_rdb_query_service import (
 from app.infrastructure.repositories.rdb_uint_of_work import RdbUnitOfWork
 from app.infrastructure.repositories.users_rdb_repository import UsersRdbRepository
 from app.infrastructure.services.user_rdb_service import UserRdbService
-
-settings = Settings()
-database: Database
-
-if settings.DB_CONNECTION_STRING is not None:
-    database = Database(settings.DB_CONNECTION_STRING)
-else:
-    raise Exception()
-
-logger = UnicornLogger()
+from app.presenter.api.db import database
 
 
 def get_logger() -> Logger:
-    return logger
+    return UnicornLogger()
 
 
 def get_database() -> Database:
