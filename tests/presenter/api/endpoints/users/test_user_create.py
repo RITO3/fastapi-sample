@@ -41,7 +41,9 @@ async def test_OK_create_user_client(mocker: MockerFixture):
         create_user_create_command, create_mock_create_user_command
     )
 
-    async with AsyncClient(app=app, base_url="http://localhost") as client:
+    async with AsyncClient(
+        app=app, base_url="http://localhost", headers={"Accept-Language": "ja"}
+    ) as client:
         yield client
 
 
@@ -110,21 +112,12 @@ class TestUserCreate(object):
 
         assert response.status_code == 400
         assert response.json() == {
-            "message": "入力値が不正です。",
+            "message": "不正な入力値です",
             "parameters": [
-                {
-                    "name": "username",
-                    "message": "ensure this value has at least 3 characters",
-                },
-                {"name": "email", "message": "value is not a valid email address"},
-                {
-                    "name": "first_name",
-                    "message": "ensure this value has at least 3 characters",
-                },
-                {
-                    "name": "last_name",
-                    "message": "ensure this value has at least 3 characters",
-                },
+                {"name": "username", "message": "入力値が3文字以上か確認してください",},
+                {"name": "email", "message": "入力値がEmailの形式ではないです"},
+                {"name": "first_name", "message": "入力値が3文字以上か確認してください",},
+                {"name": "last_name", "message": "入力値が3文字以上か確認してください",},
             ],
         }
 
@@ -146,9 +139,9 @@ class TestUserCreate(object):
 
         assert response.status_code == 400
         assert response.json() == {
-            "message": "ユーザが重複しています。",
+            "message": "ユーザが重複しています",
             "parameters": [
-                {"name": "username", "message": "usernameが重複しています。",},
-                {"name": "email", "message": "emailが重複しています。"},
+                {"name": "username", "message": "usernameが重複しています",},
+                {"name": "email", "message": "emailが重複しています"},
             ],
         }

@@ -34,7 +34,9 @@ async def test_OK_get_users_client(mocker: MockerFixture):
         create_users_get_query_service, mock_users_get_query_service
     )
 
-    async with AsyncClient(app=app, base_url="http://localhost") as client:
+    async with AsyncClient(
+        app=app, base_url="http://localhost", headers={"Accept-Language": "ja"}
+    ) as client:
         yield client
 
 
@@ -74,10 +76,10 @@ class TestUsersGet(object):
         json_obj = response.json()
         assert response.status_code == 400
         assert json_obj == {
-            "message": "入力値が不正です。",
+            "message": "不正な入力値です",
             "parameters": [
-                {"message": "value is not a valid integer", "name": "page_size"},
-                {"message": "value is not a valid integer", "name": "page_number"},
+                {"message": "入力値が整数ではありません", "name": "page_size"},
+                {"message": "入力値が整数ではありません", "name": "page_number"},
             ],
         }
 
@@ -92,15 +94,9 @@ class TestUsersGet(object):
         json_obj = response.json()
         assert response.status_code == 400
         assert json_obj == {
-            "message": "入力値が不正です。",
+            "message": "不正な入力値です",
             "parameters": [
-                {
-                    "message": "ensure this value is greater than or equal to 10",
-                    "name": "page_size",
-                },
-                {
-                    "message": "ensure this value is greater than or equal to 1",
-                    "name": "page_number",
-                },
+                {"message": "入力値が10以上か確認してください", "name": "page_size",},
+                {"message": "入力値が1以上か確認してください", "name": "page_number",},
             ],
         }

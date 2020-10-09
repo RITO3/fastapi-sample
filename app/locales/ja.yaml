@@ -1,0 +1,91 @@
+type_error:
+    none:
+        not_allowed: "none is not an allowed value"
+        allowed: "value is not none"
+    bool: "value could not be parsed to a boolean"
+    byte: "byte type expected"
+    dict: "value is not a valid dict"
+    integer: "入力値が整数ではありません"
+    float: "value is not a valid float"
+    path: "value is not a valid path"
+    decimal: "value is not a valid decimal"
+    object: "ensure this value contains valid import path or valid callable: {error_message}"
+    sequence: "value is not a valid sequence"
+    iterable: "value is not a valid iterable"
+    list: "value is not a valid list"
+    set: "value is not a valid set"
+    frozenset: "value is not a valid frozenset"
+    tuple: value is not a valid tuple
+    str: "str type expected"
+    datetime: "invalid datetime format"
+    date: "invalid date format"
+    time: "invalid time format"
+    duration: "invalid duration format"
+    hashable: "value is not a valid hashable"
+    uuid: "value is not a valid uuid"
+    not_allowed: "none is not an allowed value"
+    arbitrary_type: "instance of MyGen expected"
+    class: "a class is expected"
+    subclass: "subclass of Parent expected"
+    json: "JSON object must be str, bytes or bytearray"
+    dataclass: "instance of {class_name}, tuple or dict expected"
+    callable: "{value} is not callable"
+value_error:
+    missing: "field required"
+    email: "入力値がEmailの形式ではないです"
+    url:
+        scheme: "URL scheme not permitted"
+        userinfo: "userinfo required in URL but missing"
+        host: "URL host invalid"
+        port: "URL port invalid, port cannot exceed 65535"
+        extra: "URL invalid, extra characters found after valid URL: {extra!r}"
+    path:
+        not_exists: "file or directory at path \"{path}\" does not exist"
+        not_a_file:  "path \"{path}\" does not point to a file"
+        not_a_directory: "path \"{path}\" does not point to a directory"
+    tuple:
+        length: "wrong tuple length {0}, expected {1}"
+    list:
+        min_items: "ensure this value has at least {limit_value} items"
+        max_items: "ensure this value has at most {limit_value} items"
+    set:
+        min_items: "ensure this value has at least {limit_value} items"
+        max_items: "ensure this value has at most {limit_value} items"
+    any_str:
+        min_length: "入力値が{limit_value}文字以上か確認してください"
+        max_length: "入力値が{limit_value}文字以下か確認してください"
+    str:
+        regex: "string does not match regex \"{pattern}\""
+    number:
+        not_gt: "入力値が{limit_value}より大きい確認してください"
+        not_ge: "入力値が{limit_value}以上か確認してください"
+        not_lt: "入力値が{limit_value}未満か確認してください"
+        not_le: "入力値が{limit_value}以下か確認してください"
+        not_multiple: "ensure this value is a multiple of {multiple_of}"
+    decimal:
+        not_finite: "value is not a valid decimal"
+        max_digits: "ensure that there are no more than {max_digits} digits in total"
+        max_places: "ensure that there are no more than {decimal_places} decimal places"
+        whole_digits: "ensure that there are no more than {whole_digits} digits before the decimal point"
+    uuid:
+        version: "uuid version {required_version} expected"
+    regex_pattern: "Invalid regular expression"
+    json: "Invalid JSON"
+    ipvanyaddress: "value is not a valid IPv4 or IPv6 address"
+    ipvanyinterface: "value is not a valid IPv4 or IPv6 interface"
+    strictbool: "value is not a valid boolean"
+    color: "value is not a valid color: {reason}"
+    payment_card_number:
+        digits: "card number is not all digits"
+        luhn_check: "card number is not luhn valid"
+        invalid_length_for_brand: "Length for a {brand} card must be {required_length}"
+    invalidbytesize: "could not parse value and unit from byte string"
+    invalidbytesizeunit: "could not interpret byte unit: {unit}"
+    extra: "extra fields not permitted"
+custom:
+    duplicate:
+        parameter: "{paramater}が重複しています"
+        user: "ユーザが重複しています"
+    http:
+        400_bad_request: "不正な入力値です"
+    

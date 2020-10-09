@@ -192,6 +192,24 @@ main.pyで以下のように記述する.
 ```python
 configure_error_handlers(app)
 ```
+
+### 多言語対応
+YAMLファイルにメッセージ文を記載する.
+
+```shell
+$ pipenv install "PyYAML~=5.3.1" 
+```
+
+#### Pydantic
+
+標準機能ではメッセージ文をカスタマイズできない.
+
+例外ハンドラーでクライアントに返すときに、メッセージ文を変換する.
+
+エラー一覧の情報はGitHubの[ソース](https://github.com/samuelcolvin/pydantic/blob/master/pydantic/errors.py)を参照する.
+
+
+
 ### テスト
 
 

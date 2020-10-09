@@ -24,6 +24,7 @@ databases = {extras = ["postgresql"], version = "~=0.3.2"}
 alembic = "~=1.4.2"
 psycopg2 = "~=2.8.5"
 pydantic = {extras = ["email"], version = "~=1.6.1"}
+pyyaml = "~=5.3.1"
 
 [requires]
 python_version = "3.8"
