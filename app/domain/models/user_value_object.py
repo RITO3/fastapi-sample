@@ -114,5 +114,5 @@ class UserLastName:
 
 class UserDuplicatedError(DomainError):
     def __init__(self, parameters: List[str]):
-        super().__init__("ユーザが重複しています。")
+        super().__init__("Duplocate user.")
         self.parameters = parameters

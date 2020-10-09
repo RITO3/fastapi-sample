@@ -28,9 +28,6 @@ class RdbUnitOfWork(UnitOfWork):
         try:
             await self.__transaction.commit()
         except UniqueViolationError as uve:
-            print("UniqueViolationError!!!!")
-            print(uve)
-
             raise Exception(uve.as_dict())
         except Exception as e:
             raise e
